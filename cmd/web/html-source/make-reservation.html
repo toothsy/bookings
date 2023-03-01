@@ -92,7 +92,7 @@
 			<div class="row">
 				<div class="col">
 					<h1>Make reservation</h1>
-					<form class="needs-validation" method="post" action="">
+					<form class="needs-validation" method="post" action="" novalidate>
 						<div class="form-group mt-5">
 							<label for="name">First name</label>
 							<input
@@ -165,5 +165,29 @@
 			integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
 			crossorigin="anonymous"
 		></script>
+		<script>
+			(() => {
+				"use strict";
+
+				// Fetch all the forms we want to apply custom Bootstrap validation styles to
+				const forms = document.querySelectorAll(".needs-validation");
+
+				// Loop over them and prevent submission
+				Array.from(forms).forEach((form) => {
+					form.addEventListener(
+						"submit",
+						(event) => {
+							if (!form.checkValidity()) {
+								event.preventDefault();
+								event.stopPropagation();
+							}
+
+							form.classList.add("was-validated");
+						},
+						false
+					);
+				});
+			})();
+		</script>
 	</body>
 </html>
