@@ -1,0 +1,11 @@
+{
+      "tabWidth": 5,
+      "overrides": [
+            {
+                  "files": ["*.tmpl"],
+                  "options": {
+                        "parser": "go-template"
+                  }
+            }
+      ]
+}

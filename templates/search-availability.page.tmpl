@@ -1,0 +1,63 @@
+{{ template "base" . }}
+
+{{ define "content" }}
+     <div class="container">
+          <div class="row">
+               <div class="col-md-3"></div>
+               <div class="col-md-6">
+                    <form
+                         action="/search-availability"
+                         method="post"
+                         class="needs-validation"
+                         novalidate
+                    >
+                         <h2>Search for availability</h2>
+                         <input
+                              name="csrf_token"
+                              type="hidden"
+                              value="{{ .CSRFToken }}"
+                         />
+                         <div class="row" id="reservation-availability">
+                              <div class="col">
+                                   <input
+                                        name="start"
+                                        required
+                                        type="text"
+                                        class="form-control"
+                                        aria-describedby="start date"
+                                        placeholder="Arrival date"
+                                   />
+                              </div>
+                              <div class="col">
+                                   <input
+                                        required
+                                        type="text"
+                                        class="form-control"
+                                        name="end"
+                                        aria-describedby="end date"
+                                        placeholder="Check-out date"
+                                   />
+                              </div>
+                         </div>
+                         <hr />
+                         <button
+                              id="form-submit-button"
+                              type="submit"
+                              class="btn btn-primary"
+                         >
+                              Search Availaibility
+                         </button>
+                    </form>
+               </div>
+          </div>
+     </div>
+{{ end }}
+
+{{ define "js" }}
+     <script>
+          const elem = document.getElementById("reservation-availability");
+          const rangepicker = new DateRangePicker(elem, {
+               format: "dd-mm-yyyy",
+          });
+     </script>
+{{ end }}

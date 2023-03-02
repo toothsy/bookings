@@ -7,6 +7,7 @@ import (
 )
 
 // prevents CSRF attacks to POST requests
+// basically says ignore any requests that does not have  CSRF Token
 func NoSurfCSRFTokenCheck(next http.Handler) http.Handler {
 	csrfCheck := nosurf.New(next)
 	csrfCheck.SetBaseCookie(http.Cookie{

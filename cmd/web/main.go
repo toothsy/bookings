@@ -3,9 +3,9 @@ package main
 // I used fresh to keep running it
 import (
 	"fmt"
-	"github/toothsy/bookings/pkg/config"
-	"github/toothsy/bookings/pkg/handlers"
-	"github/toothsy/bookings/pkg/renderers"
+	"github/toothsy/bookings/internal/config"
+	"github/toothsy/bookings/internal/handlers"
+	"github/toothsy/bookings/internal/renderers"
 	"log"
 	"net/http"
 	"time"

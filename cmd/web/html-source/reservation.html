@@ -1,231 +1,231 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<title>bookings</title>
-		<link
-			href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
-			rel="stylesheet"
-			integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
-			crossorigin="anonymous"
-		/>
-		<link
-			rel="stylesheet"
-			href="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.1/dist/css/datepicker-bs5.min.css"
-		/>
-		<link
-			rel="stylesheet"
-			type="text/css"
-			href="https://unpkg.com/notie/dist/notie.min.css"
-		/>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>bookings</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.1/dist/css/datepicker-bs5.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://unpkg.com/notie/dist/notie.min.css"
+    />
 
-		<style>
-			.my-footer {
-				height: 5em;
-				background-color: #163b65;
-				margin-top: 1.5em;
-				padding: 1em;
-				color: white;
-				font-size: 80%;
-			}
-			.remove-scroll {
-				overflow: hidden !important;
-			}
-			.datepicker-picker {
-				z-index: 1000000;
-			}
-			.no-z-index {
-				z-index: unset !important;
-			}
-		</style>
-	</head>
-	<body>
-		<nav class="navbar navbar-expand-lg bg-primary">
-			<div class="container-fluid">
-				<a class="navbar-brand" href="index.html">Navbar</a>
-				<button
-					class="navbar-toggler"
-					type="button"
-					data-bs-toggle="collapse"
-					data-bs-target="#navbarSupportedContent"
-					aria-controls="navbarSupportedContent"
-					aria-expanded="false"
-					aria-label="Toggle navigation"
-				>
-					<span class="navbar-toggler-icon"></span>
-				</button>
-				<div class="collapse navbar-collapse" id="navbarSupportedContent">
-					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-						<li class="nav-item">
-							<a class="nav-link active" aria-current="page" href="index.html"
-								>Home</a
-							>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="/about">About</a>
-						</li>
-						<li class="nav-item dropdown">
-							<a
-								class="nav-link dropdown-toggle"
-								href="#"
-								role="button"
-								data-bs-toggle="dropdown"
-								aria-expanded="false"
-							>
-								Dropdown
-							</a>
-							<ul class="dropdown-menu">
-								<li>
-									<a class="dropdown-item" href="god.html">Godly rooms</a>
-								</li>
-								<li><hr class="dropdown-divider" /></li>
+    <style>
+      .my-footer {
+        height: 5em;
+        background-color: #163b65;
+        margin-top: 1.5em;
+        padding: 1em;
+        color: white;
+        font-size: 80%;
+      }
+      .remove-scroll {
+        overflow: hidden !important;
+      }
+      .datepicker-picker {
+        z-index: 1000000;
+      }
+      .no-z-index {
+        z-index: unset !important;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-primary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="index.html">Navbar</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="index.html"
+                >Home</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/about">About</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Dropdown
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a class="dropdown-item" href="god.html">Godly rooms</a>
+                </li>
+                <li><hr class="dropdown-divider" /></li>
 
-								<li>
-									<a class="dropdown-item" href="emp.html">Empororly rooms</a>
-								</li>
-								<li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item" href="emp.html">Empororly rooms</a>
+                </li>
+                <li><hr class="dropdown-divider" /></li>
 
-								<li>
-									<a class="dropdown-item" href="king.html">Kingsly rooms</a>
-								</li>
-								<li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item" href="king.html">Kingsly rooms</a>
+                </li>
+                <li><hr class="dropdown-divider" /></li>
 
-								<li>
-									<a class="dropdown-item" href="saint.html">Saintly rooms</a>
-								</li>
-							</ul>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="reservation.html">Book Now!!</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="contact.html">Contact</a>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</nav>
+                <li>
+                  <a class="dropdown-item" href="saint.html">Saintly rooms</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="reservation.html">Book Now!!</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="contact.html">Contact</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
 
-		<div class="container">
-			<div class="row">
-				<div class="col-md-3"></div>
-				<div class="col-md-6">
-					<form
-						action="reservation.html"
-						method="get"
-						class="needs-validation"
-						novalidate
-					>
-						<h2>Check reservation</h2>
-						<div class="row" id="reservation-availability">
-							<div class="col">
-								<input
-									name="start"
-									required
-									type="text"
-									class="form-control"
-									aria-describedby="start date"
-									placeholder="Arrival date"
-								/>
-							</div>
-							<div class="col">
-								<input
-									required
-									type="text"
-									class="form-control"
-									name="end"
-									aria-describedby="end date"
-									placeholder="Check-out date"
-								/>
-							</div>
-						</div>
-						<hr />
-						<button
-							id="form-submit-button"
-							type="submit"
-							class="btn btn-primary"
-						>
-							Search Availaibility
-						</button>
-					</form>
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col text-center">
-				<a href="make-reservation.html" class="btn btn-success">Book Now!!</a>
-			</div>
-		</div>
-		<footer class="my-footer">
-			<div class="row">
-				<div class="col">left</div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+          <form
+            action="reservation.html"
+            method="get"
+            class="needs-validation"
+            novalidate
+          >
+            <h2>Check reservation</h2>
+            <div class="row" id="reservation-availability">
+              <div class="col">
+                <input
+                  name="start"
+                  required
+                  type="text"
+                  class="form-control"
+                  aria-describedby="start date"
+                  placeholder="Arrival date"
+                />
+              </div>
+              <div class="col">
+                <input
+                  required
+                  type="text"
+                  class="form-control"
+                  name="end"
+                  aria-describedby="end date"
+                  placeholder="Check-out date"
+                />
+              </div>
+            </div>
+            <hr />
+            <button
+              id="form-submit-button"
+              type="submit"
+              class="btn btn-primary"
+            >
+              Search Availaibility
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col text-center">
+        <a href="make-reservation.html" class="btn btn-success">Book Now!!</a>
+      </div>
+    </div>
+    <footer class="my-footer">
+      <div class="row">
+        <div class="col">left</div>
 
-				<div class="col">center</div>
+        <div class="col">center</div>
 
-				<div class="col">right</div>
-			</div>
-		</footer>
+        <div class="col">right</div>
+      </div>
+    </footer>
 
-		<script
-			src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
-			integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
-			crossorigin="anonymous"
-		></script>
-		<script
-			src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
-			integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
-			crossorigin="anonymous"
-		></script>
-		<script src="https://unpkg.com/notie"></script>
-		<script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.1/dist/js/datepicker-full.min.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-		<script>
-			(() => {
-				"use strict";
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+      integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://unpkg.com/notie"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.1/dist/js/datepicker-full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+      (() => {
+        "use strict";
 
-				// Fetch all the forms we want to apply custom Bootstrap validation styles to
-				const forms = document.querySelectorAll(".needs-validation");
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        const forms = document.querySelectorAll(".needs-validation");
 
-				// Loop over them and prevent submission
-				Array.from(forms).forEach((form) => {
-					form.addEventListener(
-						"submit",
-						(event) => {
-							if (!form.checkValidity()) {
-								event.preventDefault();
-								event.stopPropagation();
-							}
+        // Loop over them and prevent submission
+        Array.from(forms).forEach((form) => {
+          form.addEventListener(
+            "submit",
+            (event) => {
+              if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+              }
 
-							form.classList.add("was-validated");
-						},
-						false
-					);
-				});
-			})();
-			const elem = document.getElementById("reservation-availability");
-			const rangepicker = new DateRangePicker(elem, {
-				format: "dd-mm-yyyy",
-			});
+              form.classList.add("was-validated");
+            },
+            false
+          );
+        });
+      })();
+      const elem = document.getElementById("reservation-availability");
+      const rangepicker = new DateRangePicker(elem, {
+        format: "dd-mm-yyyy",
+      });
 
-			const notify = (msg, msgType) => {
-				notie.alert({
-					type: msgType,
-					text: msg,
-				});
-			};
-			const notifyModal = (title, text, icon, cbText) => {
-				Swal.fire({
-					title: title,
-					html: text,
-					icon: icon,
-					confirmButtonText: cbText,
-				});
-			};
-			const submit_button = document.getElementById("form-submit-button");
-			submit_button.addEventListener("click", () => {
-				let attention = Prompt();
-				let htmlContent = `
+      const notify = (msg, msgType) => {
+        notie.alert({
+          type: msgType,
+          text: msg,
+        });
+      };
+      const notifyModal = (title, text, icon, cbText) => {
+        Swal.fire({
+          title: title,
+          html: text,
+          icon: icon,
+          confirmButtonText: cbText,
+        });
+      };
+      const submit_button = document.getElementById("form-submit-button");
+      submit_button.addEventListener("click", () => {
+        let attention = Prompt();
+        let htmlContent = `
 				<form
 						action=""
 						method="post"
@@ -263,84 +263,84 @@
 						</div>
 					</form>`;
 
-				attention.customeHTML({
-					msg: "Choose you dates",
-					htmlContent: htmlContent,
-				});
-			});
-			const Prompt = () => {
-				let toast = (c) => {
-					const { icon = "success", msg = "", pos = "top" } = c;
-					const Toast = Swal.mixin({
-						toast: true,
-						position: pos,
-						showConfirmButton: false,
-						timer: 3000,
-						timerProgressBar: true,
-						icon: icon,
-						title: msg,
+        attention.customeHTML({
+          msg: "Choose you dates",
+          htmlContent: htmlContent,
+        });
+      });
+      const Prompt = () => {
+        let toast = (c) => {
+          const { icon = "success", msg = "", pos = "top" } = c;
+          const Toast = Swal.mixin({
+            toast: true,
+            position: pos,
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            icon: icon,
+            title: msg,
 
-						didOpen: (toast) => {
-							toast.addEventListener("mouseenter", Swal.stopTimer);
-							toast.addEventListener("mouseleave", Swal.resumeTimer);
-						},
-					});
+            didOpen: (toast) => {
+              toast.addEventListener("mouseenter", Swal.stopTimer);
+              toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+          });
 
-					Toast.fire({});
-				};
-				let successOrFailure = (c) => {
-					const { icon = "success", msg = "", title = "", footer = "" } = c;
-					Swal.fire({
-						icon: icon,
-						title: title,
-						text: msg,
-						footer: footer,
-					});
-				};
-				let customeHTML = async (c) => {
-					const { msg = "", htmlContent = "" } = c;
-					const customDiv = Swal.mixin({
-						customClass: {
-							htmlContainer: "remove-scroll",
-							container: "remove-scroll",
-							actions: "no-z-index",
-						},
-					});
-					const { value: formValues } = await customDiv.fire({
-						title: msg,
-						html: htmlContent,
-						focusConfirm: false,
-						showCancelButton: true,
-						willOpen: () => {
-							const elem = document.getElementById("reservation-dates-modal");
-							const rangepicker = new DateRangePicker(elem, {
-								format: "dd-mm-yyyy",
-							});
-						},
+          Toast.fire({});
+        };
+        let successOrFailure = (c) => {
+          const { icon = "success", msg = "", title = "", footer = "" } = c;
+          Swal.fire({
+            icon: icon,
+            title: title,
+            text: msg,
+            footer: footer,
+          });
+        };
+        let customeHTML = async (c) => {
+          const { msg = "", htmlContent = "" } = c;
+          const customDiv = Swal.mixin({
+            customClass: {
+              htmlContainer: "remove-scroll",
+              container: "remove-scroll",
+              actions: "no-z-index",
+            },
+          });
+          const { value: formValues } = await customDiv.fire({
+            title: msg,
+            html: htmlContent,
+            focusConfirm: false,
+            showCancelButton: true,
+            willOpen: () => {
+              const elem = document.getElementById("reservation-dates-modal");
+              const rangepicker = new DateRangePicker(elem, {
+                format: "dd-mm-yyyy",
+              });
+            },
 
-						preConfirm: () => {
-							return [
-								document.getElementById("start").value,
-								document.getElementById("end").value,
-							];
-						},
-						didOpen: () => {
-							document.getElementById("start").removeAttribute("disabled");
-							document.getElementById("end").removeAttribute("disabled");
-						},
-					});
+            preConfirm: () => {
+              return [
+                document.getElementById("start").value,
+                document.getElementById("end").value,
+              ];
+            },
+            didOpen: () => {
+              document.getElementById("start").removeAttribute("disabled");
+              document.getElementById("end").removeAttribute("disabled");
+            },
+          });
 
-					if (formValues) {
-						Swal.fire(JSON.stringify(formValues));
-					}
-				};
-				return {
-					// error: error,
-					successOrFailure: successOrFailure,
-					toast: toast,
-					customeHTML: customeHTML,
-				};
-			};
-		</script>
-	</body>
+          if (formValues) {
+            Swal.fire(JSON.stringify(formValues));
+          }
+        };
+        return {
+          // error: error,
+          successOrFailure: successOrFailure,
+          toast: toast,
+          customeHTML: customeHTML,
+        };
+      };
+    </script>
+  </body>
 </html>
