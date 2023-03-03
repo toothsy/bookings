@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github/toothsy/bookings/internal/config"
+	"github/toothsy/bookings/internal/forms"
 	"github/toothsy/bookings/internal/models"
 	"github/toothsy/bookings/internal/renderers"
 	"log"
@@ -77,7 +78,51 @@ func (m *Repository) SaintHandler(w http.ResponseWriter, r *http.Request) {
 
 // Reservation this function handles all traffic to "/make-reservation"
 func (m *Repository) Reservation(w http.ResponseWriter, r *http.Request) {
-	renderers.RenderTemplate(w, r, "make-reservation.page.tmpl", &models.TemplateData{})
+	emptyReservation := models.Reservation{}
+	data := make(map[string]interface{})
+	data["reservations"] = emptyReservation
+
+	renderers.RenderTemplate(w, r, "make-reservation.page.tmpl", &models.TemplateData{
+		Form: forms.New(nil),
+		Data: data,
+	})
+
+}
+
+// Reservation this function handles all traffic to "/make-reservation"
+func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
+
+	err := r.ParseForm()
+	if err != nil {
+		log.Fatal("error while parsing", err)
+	}
+	reservations := models.Reservation{
+		FirstName: r.Form.Get("first_name"),
+		LastName:  r.Form.Get("last_name"),
+		Phone:     r.Form.Get("phone"),
+		Email:     r.Form.Get("email"),
+	}
+	form := forms.New(r.PostForm)
+	form.Required("first_name", "last_name", "email", "phone")
+	if !form.Valid() {
+		data := make(map[string]interface{})
+		data["reservations"] = reservations
+		renderers.RenderTemplate(w, r, "make-reservation.page.tmpl", &models.TemplateData{
+			Form: form,
+			Data: data,
+		})
+		fmt.Println(form.Errors)
+		return
+	}
+	m.App.Session.Put(r.Context(), "reservation", reservations)
+	http.Redirect(w, r, "/reservation-summary", http.StatusSeeOther)
+
+}
+
+// Reservation this function handles all traffic to "/make-reservation"
+func (m *Repository) ReservationSummary(w http.ResponseWriter, r *http.Request) {
+
+	renderers.RenderTemplate(w, r, "reservation-summary.page.tmpl", &models.TemplateData{})
 
 }
 

@@ -2,9 +2,11 @@ package main
 
 // I used fresh to keep running it
 import (
+	"encoding/gob"
 	"fmt"
 	"github/toothsy/bookings/internal/config"
 	"github/toothsy/bookings/internal/handlers"
+	"github/toothsy/bookings/internal/models"
 	"github/toothsy/bookings/internal/renderers"
 	"log"
 	"net/http"
@@ -22,7 +24,7 @@ var session *scs.SessionManager
 func main() {
 	app.UseSecure = false
 	app.UseCache = false
-
+	gob.Register(&models.Reservation{})
 	session = scs.New()
 	session.Lifetime = 24 * time.Hour
 	session.Cookie.Persist = true

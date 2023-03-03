@@ -1,5 +1,7 @@
 package models
 
+import "github/toothsy/bookings/internal/forms"
+
 // TemplateData holds data that can be passed to tmpl files
 type TemplateData struct {
 	StringMap map[string]string
@@ -10,4 +12,5 @@ type TemplateData struct {
 	Info      string
 	Error     string
 	CSRFToken string
+	Form      *forms.Form
 }
