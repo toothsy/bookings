@@ -15,6 +15,9 @@ import (
 var appConf *config.AppConfig
 
 func AddDefaultTemplateData(td *models.TemplateData, r *http.Request) *models.TemplateData {
+	td.Error = appConf.Session.PopString(r.Context(), "Error")
+	td.Flash = appConf.Session.PopString(r.Context(), "Flash")
+	td.Warning = appConf.Session.PopString(r.Context(), "Warning")
 	td.CSRFToken = nosurf.Token(r)
 	return td
 }

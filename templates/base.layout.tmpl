@@ -310,6 +310,29 @@
                               customeHTML: customeHTML,
                          };
                     };
+                    const notify = (msg, msgType) => {
+                         notie.alert({
+                              type: msgType,
+                              text: msg,
+                         });
+                    };
+                    const notifyModal = (title, text, icon, cbText) => {
+                         Swal.fire({
+                              title: title,
+                              html: text,
+                              icon: icon,
+                              confirmButtonText: cbText,
+                         });
+                    };
+
+                    {{with .Error}}
+                         notify({{.}},"error")
+                    {{end}}
+                    
+                    {{with .Flash}}
+                         notify({{.}},"success")
+                    {{end}}
+
                </script>
           </body>
      </html>

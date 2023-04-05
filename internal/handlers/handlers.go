@@ -1,168 +1,239 @@
 package handlers
 
+// auto increment tips
+//https://stackoverflow.com/questions/5342440/reset-auto-increment-counter-in-postgres
 import (
 	"encoding/json"
 	"fmt"
-	"github/toothsy/bookings/internal/config"
-	"github/toothsy/bookings/internal/forms"
-	"github/toothsy/bookings/internal/models"
-	"github/toothsy/bookings/internal/renderers"
-	"log"
 	"net/http"
+	"strconv"
+	"time"
+
+	"github.com/toothsy/bookings-app/internal/config"
+	"github.com/toothsy/bookings-app/internal/driver"
+	"github.com/toothsy/bookings-app/internal/forms"
+	"github.com/toothsy/bookings-app/internal/helpers"
+	"github.com/toothsy/bookings-app/internal/models"
+	"github.com/toothsy/bookings-app/internal/render"
+	"github.com/toothsy/bookings-app/internal/repository"
+	dbrepo "github.com/toothsy/bookings-app/internal/repository/DBrepo"
 )
 
-type Repository struct {
-	App *config.AppConfig
-}
-
+// Repo the repository used by the handlers
 var Repo *Repository
 
-// NewRepository return  a new Repository object with app config initilized
+// Repository is the repository type
+type Repository struct {
+	App *config.AppConfig
+	DB  repository.DatabaseRepo
+}
 
-func NewRepository(a *config.AppConfig) *Repository {
+// NewRepo creates a new repository
+func NewRepo(a *config.AppConfig, db *driver.DB) *Repository {
 	return &Repository{
 		App: a,
+		DB:  dbrepo.NewPostgresConnection(db.SQL, a),
 	}
 }
 
-// NewHandler initialises the local repo var so that I can use it in other packages
-func NewHandler(r *Repository) {
+// NewHandlers sets the repository for the handlers
+func NewHandlers(r *Repository) {
 	Repo = r
 }
 
-// HomeHandler this function handles all traffic to "/"
-func (m *Repository) HomeHandler(w http.ResponseWriter, r *http.Request) {
-	remoteIP := r.RemoteAddr
-	m.App.Session.Put(r.Context(), "remote_ip", remoteIP)
-	renderers.RenderTemplate(w, r, "home.page.tmpl", &models.TemplateData{})
+// Home is the handler for the home page
+func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
+	render.Template(w, r, "home.page.tmpl", &models.TemplateData{})
 }
 
-// AboutHandler this function handles all traffic to "/about"
-func (m *Repository) AboutHandler(w http.ResponseWriter, r *http.Request) {
-	StrMap := map[string]string{}
-	StrMap["test"] = "hello there"
-	remoteIP := m.App.Session.GetString(r.Context(), "remote_ip")
-	StrMap["remote_ip"] = remoteIP
+// About is the handler for the about page
+func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
+	render.Template(w, r, "about.page.tmpl", &models.TemplateData{})
+}
 
-	// m.App.
-	renderers.RenderTemplate(w, r, "about.page.tmpl", &models.TemplateData{
-		StringMap: StrMap,
+// Reservation renders the make a reservation page and displays form
+func (m *Repository) Reservation(w http.ResponseWriter, r *http.Request) {
+	var emptyReservation models.Reservation
+	data := make(map[string]interface{})
+	emptyReservation.Phone = "123-123-1234"
+	emptyReservation.Email = "adf@dot.com"
+	data["reservation"] = emptyReservation
+
+	render.Template(w, r, "make-reservation.page.tmpl", &models.TemplateData{
+		Form: forms.New(nil),
+		Data: data,
 	})
+}
 
+// PostReservation handles the posting of a reservation form
+func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+	sd := r.Form.Get("start_date")
+	ed := r.Form.Get("end_date")
+	timeFormat := "2006-01-02"
+	startDate, err := time.Parse(timeFormat, sd)
+
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+	endDate, err := time.Parse(timeFormat, ed)
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+
+	}
+	roomId, err := strconv.Atoi(r.Form.Get("room_id"))
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+
+	}
+	reservation := models.Reservation{
+		FirstName: r.Form.Get("first_name"),
+		LastName:  r.Form.Get("last_name"),
+		Email:     r.Form.Get("email"),
+		Phone:     r.Form.Get("phone"),
+		StartDate: startDate,
+		EndDate:   endDate,
+		RoomId:    roomId,
+	}
+
+	form := forms.New(r.PostForm)
+
+	form.Required("first_name", "last_name", "email")
+	form.MinLength("first_name", 3)
+	// form.IsEmail("email")
+
+	if !form.Valid() {
+		data := make(map[string]interface{})
+		data["reservation"] = reservation
+		render.Template(w, r, "make-reservation.page.tmpl", &models.TemplateData{
+			Form: form,
+			Data: data,
+		})
+		return
+	}
+	resId, err := m.DB.InsertReservation(reservation)
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+	restr := models.RoomRestriction{
+		RestrictionId: 1,
+		ReservationId: resId,
+		StartDate:     startDate,
+		EndDate:       endDate,
+		RoomId:        roomId,
+	}
+
+	err = m.DB.InsertRoomReservation(restr)
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+	m.App.Session.Put(r.Context(), "reservation", reservation)
+	http.Redirect(w, r, "/reservation-summary", http.StatusSeeOther)
 }
 
 // GodHandler this function handles all traffic to "/god-rooms"
 func (m *Repository) GodHandler(w http.ResponseWriter, r *http.Request) {
 	// m.App.
-	renderers.RenderTemplate(w, r, "god.page.tmpl", &models.TemplateData{})
+	render.Template(w, r, "god.page.tmpl", &models.TemplateData{})
 
 }
 
 // EmpHandler this function handles all traffic to "/emp-rooms"
 func (m *Repository) EmpHandler(w http.ResponseWriter, r *http.Request) {
-	renderers.RenderTemplate(w, r, "emp.page.tmpl", &models.TemplateData{})
+	render.Template(w, r, "emp.page.tmpl", &models.TemplateData{})
 
 }
 
 // KingHandler this function handles all traffic to "/king-rooms"
 func (m *Repository) KingHandler(w http.ResponseWriter, r *http.Request) {
-	renderers.RenderTemplate(w, r, "king.page.tmpl", &models.TemplateData{})
+	render.Template(w, r, "king.page.tmpl", &models.TemplateData{})
 
 }
 
 // SaintHandler this function handles all traffic to "/saint-rooms"
 func (m *Repository) SaintHandler(w http.ResponseWriter, r *http.Request) {
-	renderers.RenderTemplate(w, r, "saint.page.tmpl", &models.TemplateData{})
+	render.Template(w, r, "saint.page.tmpl", &models.TemplateData{})
 
 }
 
-// Reservation this function handles all traffic to "/make-reservation"
-func (m *Repository) Reservation(w http.ResponseWriter, r *http.Request) {
-	emptyReservation := models.Reservation{}
-	data := make(map[string]interface{})
-	data["reservations"] = emptyReservation
-
-	renderers.RenderTemplate(w, r, "make-reservation.page.tmpl", &models.TemplateData{
-		Form: forms.New(nil),
-		Data: data,
-	})
-
-}
-
-// Reservation this function handles all traffic to "/make-reservation"
-func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
-
-	err := r.ParseForm()
-	if err != nil {
-		log.Fatal("error while parsing", err)
-	}
-	reservations := models.Reservation{
-		FirstName: r.Form.Get("first_name"),
-		LastName:  r.Form.Get("last_name"),
-		Phone:     r.Form.Get("phone"),
-		Email:     r.Form.Get("email"),
-	}
-	form := forms.New(r.PostForm)
-	form.Required("first_name", "last_name", "email", "phone")
-	if !form.Valid() {
-		data := make(map[string]interface{})
-		data["reservations"] = reservations
-		renderers.RenderTemplate(w, r, "make-reservation.page.tmpl", &models.TemplateData{
-			Form: form,
-			Data: data,
-		})
-		fmt.Println(form.Errors)
-		return
-	}
-	m.App.Session.Put(r.Context(), "reservation", reservations)
-	http.Redirect(w, r, "/reservation-summary", http.StatusSeeOther)
-
-}
-
-// Reservation this function handles all traffic to "/make-reservation"
-func (m *Repository) ReservationSummary(w http.ResponseWriter, r *http.Request) {
-
-	renderers.RenderTemplate(w, r, "reservation-summary.page.tmpl", &models.TemplateData{})
-
-}
-
-// Availability this function handles all traffic to "/search-availability"
+// Availability renders the search availability page
 func (m *Repository) Availability(w http.ResponseWriter, r *http.Request) {
-	renderers.RenderTemplate(w, r, "search-availability.page.tmpl", &models.TemplateData{})
-
+	render.Template(w, r, "search-availability.page.tmpl", &models.TemplateData{})
 }
 
-// PostAvailability this function handles all post traffic to "/search-availability"
+// PostAvailability handles post
 func (m *Repository) PostAvailability(w http.ResponseWriter, r *http.Request) {
 	start := r.Form.Get("start")
 	end := r.Form.Get("end")
+	timeFormat := "2006-01-02"
+	startDate, err := time.Parse(timeFormat, start)
 
-	w.Write([]byte(fmt.Sprintf("<h1>start and end date are %s and %s</h1>", start, end)))
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+	endDate, err := time.Parse(timeFormat, end)
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
 
+	}
+	m.DB.SearchAvailability(startDate, endDate)
+	w.Write([]byte(fmt.Sprintf("start date is %s and end is %s", start, end)))
 }
 
 type jsonResponse struct {
-	Ok  bool   `json:"ok"`
-	Msg string `json:"msg"`
+	OK      bool   `json:"ok"`
+	Message string `json:"message"`
 }
 
-// AvailabilityJSON this function responds with JSON based on availability "/search-availability"
+// AvailabilityJSON handles request for availability and sends JSON response
 func (m *Repository) AvailabilityJSON(w http.ResponseWriter, r *http.Request) {
 	resp := jsonResponse{
-		Ok:  true,
-		Msg: "hello form routes",
+		OK:      true,
+		Message: "Available!",
 	}
-	out, err := json.MarshalIndent(resp, "", "\t")
+
+	out, err := json.MarshalIndent(resp, "", "     ")
 	if err != nil {
-		log.Fatal("coudnt marshal JSON")
+		helpers.ServerError(w, err)
+		return
 	}
+
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(out)
-
 }
 
-// Contact this function handles all traffic to "/contact"
+// Contact renders the contact page
 func (m *Repository) Contact(w http.ResponseWriter, r *http.Request) {
-	renderers.RenderTemplate(w, r, "contact.page.tmpl", &models.TemplateData{})
+	render.Template(w, r, "contact.page.tmpl", &models.TemplateData{})
+}
 
+// ReservationSummary displays the res summary page
+func (m *Repository) ReservationSummary(w http.ResponseWriter, r *http.Request) {
+	reservation, ok := m.App.Session.Get(r.Context(), "reservation").(models.Reservation)
+	if !ok {
+		m.App.ErrorLog.Println("Can't get reservation from session")
+		m.App.Session.Put(r.Context(), "error", "Can't get reservation from session")
+		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+		return
+	}
+
+	m.App.Session.Remove(r.Context(), "reservation")
+
+	data := make(map[string]interface{})
+	data["reservation"] = reservation
+
+	render.Template(w, r, "reservation-summary.page.tmpl", &models.TemplateData{
+		Data: data,
+	})
 }

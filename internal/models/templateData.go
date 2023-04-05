@@ -1,16 +1,16 @@
 package models
 
-import "github/toothsy/bookings/internal/forms"
+import "github.com/toothsy/bookings-app/internal/forms"
 
-// TemplateData holds data that can be passed to tmpl files
+// TemplateData holds data sent from handlers to templates
 type TemplateData struct {
 	StringMap map[string]string
-	NumberMap map[string]int
+	IntMap    map[string]int
 	FloatMap  map[string]float32
 	Data      map[string]interface{}
-	Warning   string
-	Info      string
-	Error     string
 	CSRFToken string
+	Flash     string
+	Warning   string
+	Error     string
 	Form      *forms.Form
 }

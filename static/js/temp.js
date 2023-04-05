@@ -1,17 +1,3 @@
-const notify = (msg, msgType) => {
-     notie.alert({
-          type: msgType,
-          text: msg,
-     });
-};
-const notifyModal = (title, text, icon, cbText) => {
-     Swal.fire({
-          title: title,
-          html: text,
-          icon: icon,
-          confirmButtonText: cbText,
-     });
-};
 const submit_button = document.getElementById("reservation-availability");
 let attention = Prompt();
 let htmlContent = `

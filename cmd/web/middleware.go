@@ -1,26 +1,24 @@
 package main
 
 import (
-	"net/http"
-
 	"github.com/justinas/nosurf"
+	"net/http"
 )
 
-// prevents CSRF attacks to POST requests
-// basically says ignore any requests that does not have  CSRF Token
-func NoSurfCSRFTokenCheck(next http.Handler) http.Handler {
-	csrfCheck := nosurf.New(next)
-	csrfCheck.SetBaseCookie(http.Cookie{
+// NoSurf is the csrf protection middleware
+func NoSurf(next http.Handler) http.Handler {
+	csrfHandler := nosurf.New(next)
+
+	csrfHandler.SetBaseCookie(http.Cookie{
 		HttpOnly: true,
 		Path:     "/",
-		Secure:   app.UseSecure,
+		Secure:   app.InProduction,
 		SameSite: http.SameSiteLaxMode,
-		// https://www.youtube.com/watch?v=aUF2QCEudPo
 	})
-	return csrfCheck
+	return csrfHandler
 }
 
-// loads and sacves session on every request
+// SessionLoad loads and saves session data for current request
 func SessionLoad(next http.Handler) http.Handler {
 	return session.LoadAndSave(next)
 }

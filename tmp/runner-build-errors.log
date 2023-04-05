@@ -1,0 +1,8 @@
+internal\helpers\helpers.go:5:2: no required module provides package github.com/tsawler/bookings-app/internal/config; to add it:
+	go get github.com/tsawler/bookings-app/internal/config
+internal\models\templatedata.go:3:8: no required module provides package github.com/tsawler/bookings-app/internal/forms; to add it:
+	go get github.com/tsawler/bookings-app/internal/forms
+internal\render\render.go:13:2: no required module provides package github.com/tsawler/bookings-app/internal/models; to add it:
+	go get github.com/tsawler/bookings-app/internal/models
+internal\repository\DBrepo\dbrepo.go:7:2: no required module provides package github.com/tsawler/bookings-app/internal/repository; to add it:
+	go get github.com/tsawler/bookings-app/internal/repository
