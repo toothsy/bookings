@@ -46,15 +46,22 @@ submit_button.addEventListener("click", () => {
           callback: () => {
                let form = document.getElementById("check-availability-form");
                let csrf_token = document.getElementById("csrf_token").value;
+               let sd = document.getElementById("start").value;
+               let ed = document.getElementById("end").value;
                let formData = new FormData(form);
                formData.append("csrf_token", csrf_token);
+               formData.append("room_id", "1");
+               formData.append("start", sd);
+               formData.append("end", ed);
+               console.log(formData);
                fetch("/search-availability-json", {
                     method: "post",
                     body: formData,
                })
                     .then((resp) => resp.json())
                     .then((data) => {
-                         console.log(data);
+                         if (data.ok) console.log(data);
+                         else console.log("not available");
                     });
           },
           didOpenParam: () => {
@@ -65,6 +72,7 @@ submit_button.addEventListener("click", () => {
                const elem = document.getElementById("reservation-dates-modal");
                const rangepicker = new DateRangePicker(elem, {
                     format: "dd-mm-yyyy",
+                    minDate: new Date(),
                });
           },
           preConfirmParam: () => {

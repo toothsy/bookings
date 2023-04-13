@@ -1,0 +1,5 @@
+- added more room types
+- added a js file for clean code
+- made another base.layout file for copying the js to every page
+- making an enum for room types, basically I have the room-id in my session variable
+  - update this here to avoid problems

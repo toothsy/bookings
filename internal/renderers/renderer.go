@@ -2,14 +2,14 @@ package renderers
 
 import (
 	"bytes"
-	"github/toothsy/bookings/internal/config"
-	"github/toothsy/bookings/internal/models"
 	"html/template"
 	"log"
 	"net/http"
 	"path/filepath"
 
 	"github.com/justinas/nosurf"
+	"github.com/toothsy/bookings-app/internal/config"
+	"github.com/toothsy/bookings-app/internal/models"
 )
 
 var appConf *config.AppConfig

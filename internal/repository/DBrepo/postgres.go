@@ -2,6 +2,7 @@ package dbrepo
 
 import (
 	"context"
+	"log"
 	"time"
 
 	"github.com/toothsy/bookings-app/internal/models"
@@ -70,13 +71,23 @@ func (m *postrgesDBRepo) SearchRoomReservationByRoomID(start, end time.Time, roo
 	sqlStmt := `select count(id ) 	
 			from room_restrictions rr 
 			where room_id=$1
-			and $2 <= rr.end_date  and $3>= rr.start_date`
-	rows, err := m.DB.QueryContext(ctx, sqlStmt, roomID, end, start)
+			and $2 <= rr.start_date  and $3>= rr.end_date `
+	rows, err := m.DB.QueryContext(ctx, sqlStmt, roomID, start, end)
 	if err != nil {
 		return false, nil
 	}
+	defer rows.Close()
 	var count int
-	rows.Scan(&count)
+	for rows.Next() {
+		err := rows.Scan(&count)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+	}
+	if err := rows.Err(); err != nil {
+		return false, err
+	}
 	if count != 0 {
 		return false, nil
 	}
@@ -85,7 +96,7 @@ func (m *postrgesDBRepo) SearchRoomReservationByRoomID(start, end time.Time, roo
 }
 
 // SearchAvailability searches availability based on start and end date
-func (m *postrgesDBRepo) SearchAvailability(start, end time.Time) ([]models.Room, error) {
+func (m *postrgesDBRepo) SearchAvailabilityForAllRooms(start, end time.Time) ([]models.Room, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), TIMEOUT)
 	defer cancel()
 	var rooms []models.Room
@@ -94,7 +105,7 @@ func (m *postrgesDBRepo) SearchAvailability(start, end time.Time) ([]models.Room
 			from rooms r 
 			where r.id 
 			not in 
-			(    select rr.id
+			(    select rr.room_id
 				from room_restrictions rr 
 				where $1<= rr.end_date  and $2>= rr.start_date
 			)`

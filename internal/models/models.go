@@ -2,6 +2,30 @@ package models
 
 import "time"
 
+// holds the room model
+type RoomType int
+
+const (
+	Godly = iota + 1
+	Empororly
+	Saintly
+	Kingly
+)
+
+func (rt RoomType) String() string {
+	switch rt {
+	case Godly:
+		return "Godly"
+	case Empororly:
+		return "Empororly"
+	case Saintly:
+		return "Saintly"
+	case Kingly:
+		return "Kingly"
+	}
+	return "unknown-room-type"
+}
+
 // Users holds User model
 
 type User struct {
